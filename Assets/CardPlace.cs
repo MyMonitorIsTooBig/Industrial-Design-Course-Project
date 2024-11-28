@@ -7,6 +7,7 @@ public class CardPlace : MonoBehaviour
 {
 
     [SerializeField] playerSlots _playerSlots;
+    [SerializeField] enemySlots _enemySlots;
     bool _placeCard { get; set; } = false;
     bool cardPlaced { get; set; } = false;
     MeshRenderer mesh;
@@ -30,7 +31,7 @@ public class CardPlace : MonoBehaviour
 
 
 
-    [SerializeField]int cardSelectPos = 0;
+    [SerializeField]public int cardSelectPos = 0;
 
     [SerializeField] GameObject selectedIcon;
 
@@ -59,23 +60,46 @@ public class CardPlace : MonoBehaviour
         switch (phase)
         {
             case 0:
-                infoText.text = "Press The DECK Button To Initiate the Draw Phase!";
-                secondInfoText.text = "";
-                if (moveSlider)
+                cardSelectPos = 0;
+                if (currentCards.Count >= 3)
                 {
-                    secondInfoText.text = "Make sure that the slider is at the top before entering the draw phase!";
+                    infoText.text = "Looks like you have no more room in your hand! Press Select to Skip to the Play phase!";
                 }
-                if (deckButton)
+                else
                 {
-                    moveSlider = false;
-                    infoText.text = "OK! Now slide the slider all the way to the bottom, then back up again to complete the draw phase!";
-                    secondInfoText.text = " ";
+                    infoText.text = "Press The DECK Button To Initiate the Draw Phase!";
+                    secondInfoText.text = "";
+                    if (moveSlider)
+                    {
+                        secondInfoText.text = "Make sure that the slider is at the top before entering the draw phase!";
+                    }
+                    if (deckButton)
+                    {
+                        moveSlider = false;
+                        infoText.text = "OK! Now slide the slider all the way to the bottom, then back up again to complete the draw phase!";
+                        secondInfoText.text = " ";
+                    }
+
                 }
 
                 break;
             case 1:
-                infoText.text = "Great! Now use the joystick to choose a card then hit the SELECT button to select it";
-                selectedIcon.transform.position = handTransforms[cardSelectPos].position;
+
+                if (_playerSlots.slot1 && _playerSlots.slot2 && _playerSlots.slot3)
+                {
+                    infoText.text = "Looks like you have no room to place a card! Hit the select button to skip to the battle phase!";
+                }
+
+                else
+                {
+                    infoText.text = "Great! Now use the joystick to choose a card then hit the SELECT button to select it";
+                    selectedIcon.transform.position = handTransforms[cardSelectPos].position;
+                }
+                if (currentCards.Count <= 0)
+                {
+                    infoText.text = "Looks like you have no cards to place! Press select to skip the turn!";
+                }
+                
                 break;
             case 2:
                 infoText.text = "Epic! Now that you have a card selected, use the joystick to choose an open slot to place this card. To lock in the selection, grab the physical blank card and SLAM it onto the card pedestal located on the controller.";
@@ -91,6 +115,7 @@ public class CardPlace : MonoBehaviour
                 break;
             case 4:
                 infoText.text = "Now the enemy will place down their card, press the REVEAL button to initate the BATTLE phase";
+                cardSelectPos = 0;
                 break;
             case 5:
 
@@ -100,7 +125,26 @@ public class CardPlace : MonoBehaviour
 
                 break;
             case 7:
-                infoText.text = "Woah! What a friggen sweet battle! Press Select to end the round";
+                if(_playerSlots.slot1 && _playerSlots.slot2 && _playerSlots.slot3)
+                {
+                    infoText.text = "Woah! You WON!";
+                    phase = 12;
+                }
+                else if (_enemySlots.slot1 && _enemySlots.slot2 && _enemySlots.slot3)
+                {
+                    infoText.text = "Woah! The Enemy WON!";
+                    phase = 12;
+                }
+                else if(_enemySlots.slot1 && _enemySlots.slot2 && _enemySlots.slot3)
+                {
+                    infoText.text = "Woah! You both TIED!";
+                    phase = 12;
+                }
+                else
+                {
+                    infoText.text = "Woah! What a friggen sweet battle! Press Select to end the round";
+                    //phase++;
+                }
                 break;
         }
 
@@ -152,30 +196,59 @@ public class CardPlace : MonoBehaviour
 
         switch (phase)
         {
-            case 1:
-                if(currentCards.Count >= cardSelectPos + 1)
+            case 0:
+                if (currentTimeSelected == 0.0f)
                 {
-                    selectedCard = currentCards[cardSelectPos].gameObject;
 
-                    selectedPhysicalCard = Instantiate(physicalCards[selectedCard.GetComponent<Card>().type], boardTransforms[cardSelectPos].position + new Vector3(0,0.1f,0), Quaternion.identity);
-                    selectedPhysicalCard.GetComponent<Card>().slot = cardSelectPos;
-
-                    currentCards.RemoveAt(cardSelectPos);
-                    Destroy(selectedCard);
-                    
-
-
-                    UpdateHandCardPlacements();
-
-
-                    cardSelectPos = 0;
                     phase++;
-
+                    checkSelectTime = true;
 
                 }
                 break;
+            case 1:
+                if (currentTimeSelected == 0.0f)
+                {
+
+                    if (currentCards.Count >= cardSelectPos + 1)
+                    {
+                        selectedCard = currentCards[cardSelectPos].gameObject;
+
+                        selectedPhysicalCard = Instantiate(physicalCards[selectedCard.GetComponent<Card>().type], boardTransforms[cardSelectPos].position + new Vector3(0, 0.1f, 0), Quaternion.identity);
+                        selectedPhysicalCard.GetComponent<Card>().slot = cardSelectPos;
+
+                        //Debug.Log("currentCardSelect is: " + cardSelectPos);
+                        //Debug.Log("physical cards slot is: " + selectedPhysicalCard.GetComponent<Card>().slot);
+                        currentCards.RemoveAt(cardSelectPos);
+                        Destroy(selectedCard);
+
+
+
+                        UpdateHandCardPlacements();
+
+
+                        cardSelectPos = 0;
+                        phase++;
+
+
+                    }
+                    else if(currentCards.Count <= 0)
+                    {
+                        phase = 3;
+                    }
+                    checkSelectTime = true;
+
+                }
+                
+                break;
             case 7:
-                phase = 0;
+
+                if (currentTimeSelected == 0.0f)
+                {
+
+                    phase = 0;
+                    checkSelectTime = true;
+
+                }
                 break;
         }
 
@@ -269,10 +342,22 @@ public class CardPlace : MonoBehaviour
         deckButton = false;
         _handNum++;
 
-        int randomNum = Random.Range(0, cards.Count);
 
-        currentCards.Add(Instantiate(cards[randomNum], handTransforms[cardSelectPos]));
+        if (currentCards.Count >= 2)
+        {
+            int randomNum = Random.Range(0, cards.Count);
+            currentCards.Add(Instantiate(cards[randomNum], handTransforms[cardSelectPos]));
+        }
+        else
+        {
+            int randomNum = Random.Range(0, cards.Count);
+            currentCards.Add(Instantiate(cards[randomNum], handTransforms[cardSelectPos]));
+            randomNum = Random.Range(0, cards.Count);
+            currentCards.Add(Instantiate(cards[randomNum], handTransforms[cardSelectPos]));
+            Debug.Log(currentCards.Count);
+        }
 
+        UpdateHandCardPlacements();
         phase++;
     }
 

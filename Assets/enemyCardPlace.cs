@@ -42,17 +42,25 @@ public class enemyCardPlace : MonoBehaviour
 
                 break;
             case 4:
-                populate();
-                int rand = Random.Range(0,3);
-                if (!_slots.checkSlots(rand))
+                if(_slots.slot1 && _slots.slot2 && _slots.slot3)
                 {
-                    _slots.updateSlots(rand, selectedPhysicalCard);
-                    selectedPhysicalCard.transform.position = cardSlots[rand].position + new Vector3(0,0.1f,0);
-                    selectedPhysicalCard.GetComponent<Card>().slot = rand;
-                    canPopulate = true;
+
                     _playerCardPlace.phase++;
+
                 }
-                
+                else
+                {
+                    populate();
+                    int rand = Random.Range(0, 3);
+                    if (!_slots.checkSlots(rand))
+                    {
+                        _slots.updateSlots(rand, selectedPhysicalCard);
+                        selectedPhysicalCard.transform.position = cardSlots[rand].position + new Vector3(0, 0.1f, 0);
+                        selectedPhysicalCard.GetComponent<Card>().slot = rand;
+                        canPopulate = true;
+                        _playerCardPlace.phase++;
+                    }
+                }
                 break;
         }
     }

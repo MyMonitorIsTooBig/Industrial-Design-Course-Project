@@ -19,6 +19,8 @@ public class Card : MonoBehaviour
     playerSlots _playerSlots;
     enemySlots _enemySlots;
 
+    bool placed = false;
+
     public int slot = 0;
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,18 @@ public class Card : MonoBehaviour
     {
         switch (cardPlace.phase)
         {
+            case 2:
+                if(player == "Player")
+                {
+                    if (!placed)
+                    {
+                        slot = cardPlace.cardSelectPos;
+                    }
+                }
+                break;
+            case 3:
+                placed = true;
+                break;
             case 6:
                 revealCard();
                 break;
@@ -47,8 +61,10 @@ public class Card : MonoBehaviour
     void revealCard()
     {
         //cardFace.SetActive(true);
-
-        GetComponent<MeshRenderer>().material = newMat;
+        if(player != "HAND")
+        {
+            GetComponent<MeshRenderer>().material = newMat;
+        }
     }
 
 

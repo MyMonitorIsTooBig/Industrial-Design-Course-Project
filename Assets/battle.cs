@@ -28,6 +28,10 @@ public class battle : MonoBehaviour
     {
         switch (gameController.phase)
         {
+            case 0:
+                enemyTypes = new List<int>();
+                playerTypes = new List<int>();
+                break;
             case 6:
                 if (canAdd)
                 {
@@ -52,12 +56,6 @@ public class battle : MonoBehaviour
                 }
                 break;
             case 7:
-                if (reset)
-                {
-                    //enemyTypes = new List<int>();
-                    //playerTypes = new List<int>();
-                }
-
                 canAdd = true;
 
                 break;

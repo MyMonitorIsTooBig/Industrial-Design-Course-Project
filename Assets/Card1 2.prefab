@@ -89,7 +89,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  player: 
+  player: HAND
   weakType: 1
   cardFace: {fileID: 3513165718697707658}
   newMat: {fileID: 0}
+  slot: 0
