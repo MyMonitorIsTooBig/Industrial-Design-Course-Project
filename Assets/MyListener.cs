@@ -25,7 +25,7 @@ public class MyListener : MonoBehaviour
     }
     void OnMessageArrived(string msg)
     {
-        Debug.Log(msg);
+        //Debug.Log(msg);
         if(msg == "CARD READ")
         {
             _card.updatePlaceCard(true);

@@ -30,7 +30,7 @@ public class CardPlace : MonoBehaviour
 
 
 
-    int cardSelectPos = 0;
+    [SerializeField]int cardSelectPos = 0;
 
     [SerializeField] GameObject selectedIcon;
 
@@ -60,6 +60,7 @@ public class CardPlace : MonoBehaviour
         {
             case 0:
                 infoText.text = "Press The DECK Button To Initiate the Draw Phase!";
+                secondInfoText.text = "";
                 if (moveSlider)
                 {
                     secondInfoText.text = "Make sure that the slider is at the top before entering the draw phase!";
@@ -97,6 +98,9 @@ public class CardPlace : MonoBehaviour
             case 6:
                 infoText.text = "The battle phase has now begun! You can see the placed cards, press the BATTLE button to finish the battle phase!";
 
+                break;
+            case 7:
+                infoText.text = "Woah! What a friggen sweet battle! Press Select to end the round";
                 break;
         }
 
@@ -151,13 +155,13 @@ public class CardPlace : MonoBehaviour
             case 1:
                 if(currentCards.Count >= cardSelectPos + 1)
                 {
-                    Debug.Log("Can select current card!");
                     selectedCard = currentCards[cardSelectPos].gameObject;
 
                     selectedPhysicalCard = Instantiate(physicalCards[selectedCard.GetComponent<Card>().type], boardTransforms[cardSelectPos].position + new Vector3(0,0.1f,0), Quaternion.identity);
+                    selectedPhysicalCard.GetComponent<Card>().slot = cardSelectPos;
 
                     currentCards.RemoveAt(cardSelectPos);
-                    selectedCard.GetComponent<Card>().destroyCard();
+                    Destroy(selectedCard);
                     
 
 
@@ -169,6 +173,9 @@ public class CardPlace : MonoBehaviour
 
 
                 }
+                break;
+            case 7:
+                phase = 0;
                 break;
         }
 
@@ -264,7 +271,7 @@ public class CardPlace : MonoBehaviour
 
         int randomNum = Random.Range(0, cards.Count);
 
-        currentCards.Add(Instantiate(cards[randomNum], handTransforms[randomNum]));
+        currentCards.Add(Instantiate(cards[randomNum], handTransforms[cardSelectPos]));
 
         phase++;
     }
@@ -288,7 +295,6 @@ public class CardPlace : MonoBehaviour
 
     public void startBattle()
     {
-        
         if (phase == 6)
         {
             if (currentTimeSelected == 0.0f)
@@ -298,13 +304,5 @@ public class CardPlace : MonoBehaviour
             }
         }
         
-        if(phase == 8)
-        {
-            if (currentTimeSelected == 0.0f)
-            {
-                //phase = 0;
-                checkSelectTime = true;
-            }
-        }
     }
 }

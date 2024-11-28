@@ -15,6 +15,8 @@ public class battle : MonoBehaviour
     List<GameObject> playerCards = new List<GameObject>();
     bool canAdd = true;
 
+    bool reset = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +28,7 @@ public class battle : MonoBehaviour
     {
         switch (gameController.phase)
         {
-            case 7:
+            case 6:
                 if (canAdd)
                 {
 
@@ -49,9 +51,13 @@ public class battle : MonoBehaviour
                     canAdd = false;
                 }
                 break;
-            case 8:
-                enemyTypes = new List<int>();
-                playerTypes = new List<int>();
+            case 7:
+                if (reset)
+                {
+                    //enemyTypes = new List<int>();
+                    //playerTypes = new List<int>();
+                }
+
                 canAdd = true;
 
                 break;

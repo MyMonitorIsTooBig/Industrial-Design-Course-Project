@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 182965297604584882}
   - component: {fileID: 5292357546086132901}
   m_Layer: 5
-  m_Name: Card1
+  m_Name: Card1 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7660377, g: 0.35700244, b: 0.35700244, a: 1}
+  m_Color: {r: 0.4627451, g: 0.542971, b: 0.75686276, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56cdf95b7e87e144a82e1226a34a6071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   player: 
   weakType: 1
   cardFace: {fileID: 3513165718697707658}

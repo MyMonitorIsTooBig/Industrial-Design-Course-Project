@@ -16,12 +16,18 @@ public class Card : MonoBehaviour
 
     [SerializeField] Material newMat;
 
+    playerSlots _playerSlots;
+    enemySlots _enemySlots;
+
+    public int slot = 0;
     // Start is called before the first frame update
     void Start()
     {
         battleLogic = GameObject.FindObjectOfType<battle>();
         cardPlace = GameObject.FindObjectOfType<CardPlace>();
         score = GameObject.FindObjectOfType<Score>();
+        _playerSlots = FindObjectOfType<playerSlots>();
+        _enemySlots = FindObjectOfType<enemySlots>();
     }
 
     // Update is called once per frame
@@ -48,7 +54,15 @@ public class Card : MonoBehaviour
 
     public void destroyCard()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        if(player == "Player")
+        {
+            _playerSlots.deleteCard(slot);
+        }
+        if(player == "Enemy")
+        {
+            _enemySlots.deleteCard(slot);
+        }
     }
 
     public void battle()
@@ -57,6 +71,7 @@ public class Card : MonoBehaviour
         {
             if (battleLogic.enemyTypes.Contains(weakType))
             {
+                Debug.Log("I am ded and my type: " + type);
                 destroyCard();
                 score.updateScore("Enemy");
             }
@@ -66,6 +81,7 @@ public class Card : MonoBehaviour
         {
             if (battleLogic.playerTypes.Contains(weakType))
             {
+                Debug.Log("I am ded and my type: " + type);
                 destroyCard();
                 score.updateScore("Player");
             }

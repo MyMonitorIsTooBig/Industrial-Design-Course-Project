@@ -48,6 +48,7 @@ public class enemyCardPlace : MonoBehaviour
                 {
                     _slots.updateSlots(rand, selectedPhysicalCard);
                     selectedPhysicalCard.transform.position = cardSlots[rand].position + new Vector3(0,0.1f,0);
+                    selectedPhysicalCard.GetComponent<Card>().slot = rand;
                     canPopulate = true;
                     _playerCardPlace.phase++;
                 }
