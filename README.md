@@ -28,6 +28,6 @@ https://www.youtube.com/watch?v=wxifi8fT8Cc
 https://www.youtube.com/watch?v=9Cwn4RxTfeM 
 
 
-**Link To Electronic and Assembly Simulation Video: **
+**Link To Electronic and Assembly Simulation Video:**
 
 https://youtu.be/VmjWsArN9i4
