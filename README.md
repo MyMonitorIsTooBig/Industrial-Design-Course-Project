@@ -25,7 +25,7 @@ https://www.youtube.com/watch?v=wxifi8fT8Cc
 
 **Link To Prototype Demo Video:**
 
-https://www.youtube.com/watch?v=9Cwn4RxTfeM 
+https://www.youtube.com/watch?v=1Hc-Lim6AQ0
 
 
 **Link To Electronic and Assembly Simulation Video:**
